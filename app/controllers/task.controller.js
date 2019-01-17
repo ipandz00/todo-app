@@ -29,8 +29,8 @@ exports.create = (req, res) => {
 // Retrieve and return all tasks from the database.
 exports.findAll = (req, res) => {
 	Task.find()
-    .then(notes => {
-        res.send(notes);
+    .then(tasks => {
+        res.send(tasks);
     }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while retrieving tasks."
@@ -40,7 +40,24 @@ exports.findAll = (req, res) => {
 
 // Find a single task with a taskId
 exports.findOne = (req, res) => {
-
+	Task.findById(req.params.taskId)
+    .then(task => {
+        if(!task) {
+            return res.status(404).send({
+                message: "Task not found with id " + req.params.taskId
+            });            
+        }
+        res.send(task);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Task not found with id " + req.params.taskId
+            });                
+        }
+        return res.status(500).send({
+            message: "Error retrieving task with id " + req.params.taskId
+        });
+    });
 };
 
 // Update a task identified by the taskId in the request
