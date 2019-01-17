@@ -1,0 +1,13 @@
+{
+	"development": {
+		"database": "todo",
+		"host": "localhost:27017"
+	},
+	"test": {
+		"database": "todo_test",
+		"host": "localhost"
+	},
+	"production": {
+		"use_env_variable": "MONGODB_URI"
+	}
+}
