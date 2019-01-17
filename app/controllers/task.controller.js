@@ -28,7 +28,14 @@ exports.create = (req, res) => {
 
 // Retrieve and return all tasks from the database.
 exports.findAll = (req, res) => {
-
+	Task.find()
+    .then(notes => {
+        res.send(notes);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving tasks."
+        });
+    });
 };
 
 // Find a single task with a taskId
