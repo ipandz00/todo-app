@@ -4,7 +4,8 @@
   "description": "A simple ExpressJS + React ToDo App",
   "main": "server.js",
   "scripts": {
-    "start": "npm install && node server.js",
+    "setup": "npm install && node seedDB.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ivan Pandžić",
