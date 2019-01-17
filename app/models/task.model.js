@@ -12,6 +12,16 @@ const taskSchema = Schema({
 		required: true,
 		unique: false
 	}
+},
+{
+	id: false,
+	toObject: { virtuals: true },
+    toJSON: { virtuals: true }
 });
+
+taskSchema.virtual('createdAt')
+	.get(function() {
+		return this._id.getTimestamp();
+	});
 
 module.exports = mongoose.model('Task', taskSchema);

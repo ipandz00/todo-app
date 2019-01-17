@@ -28,7 +28,7 @@ exports.create = (req, res) => {
 
 // Retrieve and return all tasks from the database.
 exports.findAll = (req, res) => {
-	Task.find()
+	Task.find().select("-__v")
     .then(tasks => {
         res.send(tasks);
     }).catch(err => {
