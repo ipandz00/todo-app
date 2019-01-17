@@ -9,6 +9,8 @@ export default class Tasks extends Component {
 		this.state = {
 			taskData: null
 		}
+
+		this.onRowsDelete = this.onRowsDelete.bind(this);
 	}
 
 	componentDidMount() {
@@ -23,6 +25,10 @@ export default class Tasks extends Component {
 		});
 	}
 
+	onRowsDelete(e) {
+		console.log(e);
+	}
+
 	render() {
 		return (
 			<React.Fragment>
@@ -33,6 +39,14 @@ export default class Tasks extends Component {
 					  title={"Task list"}
 					  data={this.state.taskData}
 					  columns={["ID", "Title", "Description", "Creation date"]}
+					  options = {{
+					  	filterType: 'checkbox',
+					  	rowsPerPage: 5,
+					  	print: false,
+					  	download: false,
+					  	onRowsDelete: this.onRowsDelete,
+					  	pagination: this.state.taskData.length > 5
+					  }}
 					/>
 				}
 			</React.Fragment>
