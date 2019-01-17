@@ -13,6 +13,6 @@ module.exports = (app) => {
     // Update a Task with taskId
     app.put('/api/tasks/:taskId', tasks.update);
 
-    // Delete a Task with taskId
-    app.delete('/api/tasks/:taskId', tasks.delete);
+    // Delete a set of Tasks
+    app.delete('/api/tasks', tasks.delete);
 }
