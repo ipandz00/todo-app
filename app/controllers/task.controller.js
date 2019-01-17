@@ -62,7 +62,35 @@ exports.findOne = (req, res) => {
 
 // Update a task identified by the taskId in the request
 exports.update = (req, res) => {
+	// Validate Request
+    if(!req.body.title) {
+        return res.status(400).send({
+            message: "Task title can not be empty."
+        });
+    }
 
+    // Find task and update it with the request body
+    Task.findByIdAndUpdate(req.params.taskId, {
+        title: req.body.title, 
+        description: req.body.description || 'No description availible.'
+    }, {new: true})
+    .then(task => {
+        if(!task) {
+            return res.status(404).send({
+                message: "Task not found with id " + req.params.taskId
+            });
+        }
+        res.send(task);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Task not found with id " + req.params.taskId
+            });                
+        }
+        return res.status(500).send({
+            message: "Error updating task with id " + req.params.taskId
+        });
+    });
 };
 
 // Delete a task with the specified taskId in the request
