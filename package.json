@@ -4,6 +4,7 @@
   "description": "A simple ExpressJS + React ToDo App",
   "main": "server.js",
   "scripts": {
+    "start": "npm install && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ivan Pandžić",
