@@ -1,26 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Main from './pages/Main.js';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+const App = () => (
+  <React.Fragment>
+    <CssBaseline />
+    <Main />
+  </React.Fragment>
+)
 
 export default App;
