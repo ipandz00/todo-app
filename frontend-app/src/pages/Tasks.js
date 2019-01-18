@@ -4,6 +4,7 @@ import MaterialTable from 'material-table'
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import Dialog from '../containers/AddUpdateDialogContainer.js';
+import DeleteDialog from '../containers/DeleteDialogContainer.js';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add'
 
@@ -14,7 +15,8 @@ export default class Tasks extends Component {
 		this.state = {
 			tasksData: null,
 			addModal: false,
-			singleTask: null
+			singleTask: null,
+			deleteDialog: false
 		}
 
 		this.idsToDelete = [];
@@ -22,6 +24,7 @@ export default class Tasks extends Component {
 		this.onSelectionChange = this.onSelectionChange.bind(this);
 		this.handleTaskDelete = this.handleTaskDelete.bind(this);
 		this.handleSave = this.handleSave.bind(this);
+		this.handleDeleteDialog = this.handleDeleteDialog.bind(this);
 	}
 
 	componentDidMount() {
@@ -48,9 +51,9 @@ export default class Tasks extends Component {
 			this.idsToDelete.forEach((item) => {
 				let index = data.findIndex(x => x._id === item);
 				data.splice(index, 1);
-				this.idsToDelete.length = 0;
 			});
 			this.setState({tasksData: data});
+			this.idsToDelete.length = 0;
 		})
 	}
 
@@ -81,6 +84,13 @@ export default class Tasks extends Component {
 		this.setState({singleTask: data, addModal: true});
 	}
 
+	handleDeleteDialog(ans) {
+		if(ans) {
+			this.handleTaskDelete();
+		}
+		this.setState({deleteDialog: false});	
+	}
+
 	render() {
 		return (
 			<React.Fragment>
@@ -107,7 +117,9 @@ export default class Tasks extends Component {
 					  	{
 					      icon: 'delete_circle',
 					      tooltip: 'Delete selected tasks',
-					      onClick: this.handleTaskDelete
+					      onClick: () => {
+					      	this.setState({deleteDialog: true});
+					      }
 					    },
 					  	]}
 					/>
@@ -117,6 +129,10 @@ export default class Tasks extends Component {
 					handleClose={()=>this.setState({addModal: false})}
 					handleSave={this.handleSave}
 					data={this.state.singleTask}
+				/>
+				<DeleteDialog
+					open={this.state.deleteDialog}
+					getAnswer={this.handleDeleteDialog} 
 				/>
 			</React.Fragment>
 		);
