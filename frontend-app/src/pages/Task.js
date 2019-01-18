@@ -10,6 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import BackIcon from '@material-ui/icons/Reply';
 import DeleteDialog from '../containers/DeleteDialogContainer.js';
+import Grid from '@material-ui/core/Grid';
 
 export default class Task extends Component {
 	constructor(props) {
@@ -67,31 +68,42 @@ export default class Task extends Component {
 		return (
 			<React.Fragment>
 				{this.state.taskData && 
-					<React.Fragment>
-						<TaskDetails data={this.state.taskData}/>
-						<Dialog 
-							open={this.state.updateModal} 
-							data={this.state.taskData}
-							handleClose={this.handleClose}
-							handleSave={this.handleSave}
-						/>
-						<DeleteDialog
-							open={this.state.deleteModal}
-							getAnswer={this.handleDeleteDialog} 
-						/>
-						<Link to='/tasks'>
-							<Fab aria-label="back" >
-						    	<BackIcon />
+					<Grid 
+				      container 
+				      direction="column"
+				      justify="center"
+				      alignItems="center"
+				      spacing={16}
+				      style={{marginTop: '3%'}}
+				    >
+				    	<Grid item xs={8}>
+							<TaskDetails data={this.state.taskData}/>
+						</Grid>
+						<Grid item xs={6}>
+							<Link to='/tasks'>
+								<Fab aria-label="back" >
+							    	<BackIcon />
+							    </Fab>
+							</Link>
+							<Fab color="primary" aria-label="Edit" onClick={()=>this.setState({updateModal: true})}>
+						    	<EditIcon />
 						    </Fab>
-						</Link>
-						<Fab color="primary" aria-label="Edit" onClick={()=>this.setState({updateModal: true})}>
-					    	<EditIcon />
-					    </Fab>
-					    <Fab color="secondary" aria-label="Delete" onClick={()=>this.setState({deleteModal: true})}>
-					    	<DeleteIcon />
-					    </Fab>
-					</React.Fragment>
+						    <Fab color="secondary" aria-label="Delete" onClick={()=>this.setState({deleteModal: true})}>
+						    	<DeleteIcon />
+						    </Fab>
+						</Grid>
+					</Grid>
 				}
+				<Dialog 
+					open={this.state.updateModal} 
+					data={this.state.taskData}
+					handleClose={this.handleClose}
+					handleSave={this.handleSave}
+				/>
+				<DeleteDialog
+					open={this.state.deleteModal}
+					getAnswer={this.handleDeleteDialog} 
+				/>
 			</React.Fragment>
 		);
 	}

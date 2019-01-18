@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
   root: {
@@ -17,23 +16,20 @@ const TaskDetails = (props) => {
   const { classes } = props;
 
   return (
-    <Grid 
-      container 
-      direction="row"
-      justify="center"
-      alignItems="center"
-    >
-      <Grid item xs={4}>
-        <Paper className={classes.root} elevation={1}>
-          <Typography variant="h5" component="h3">
-            {props.data.title}
-          </Typography>
-          <Typography component="p">
-            {props.data.description}
-          </Typography>
-        </Paper>
-      </Grid>
-    </Grid>
+    <Paper className={classes.root} elevation={1}>
+      <Typography variant="h3" component="h3" gutterBottom={true}>
+        {props.data.title}
+      </Typography>
+      <Typography component="subheading" gutterBottom={true}>
+       {props.data.description}
+      </Typography>
+      <Typography component="h6" gutterBottom={true}>
+        <b>Created at:</b> {props.data.createdAt}
+      </Typography>
+      <Typography component="h6" gutterBottom={true}>
+       <b>Internal ID:</b> {props.data._id}
+      </Typography>
+    </Paper>
   );
 }
 
