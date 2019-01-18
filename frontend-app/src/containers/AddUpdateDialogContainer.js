@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AddUpdateDialog from '../components/AddUpdateDialog.js';
+import { createTask, updateTask } from '../api.js';
 
 export default class addUpdateDialogContainer extends Component {
 	constructor(props) {
@@ -44,12 +45,31 @@ export default class addUpdateDialogContainer extends Component {
 		}
 	}
 
+	createNewTask() {
+		createTask(this.state.title, this.state.description)
+		.then((response) =>{
+			this.props.onDataChange(response);
+		});
+	}
+
+	updateCurrentTask() {
+		updateTask(this.props.data._id, this.state.title, this.state.description)
+		.then((response) => {
+			this.props.onDataChange(response);
+		});
+	}
+
 	handleClose() {
 		this.props.handleClose();
 	}
 
 	handleSaveClick() {
-		this.props.handleSave(this.state);
+		if(this.state.type === 'Edit task' && this.props.data._id) {
+			this.updateCurrentTask();
+		}
+		else {
+			this.createNewTask();
+		}
 	}
 
 	handleInputChange(e) {

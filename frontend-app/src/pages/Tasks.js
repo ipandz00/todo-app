@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getTasks, createTask, updateTask, deleteTasks } from '../api.js';
+import { getTasks, deleteTasks } from '../api.js';
 import MaterialTable from 'material-table'
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
@@ -23,8 +23,8 @@ export default class Tasks extends Component {
 
 		this.onSelectionChange = this.onSelectionChange.bind(this);
 		this.handleTaskDelete = this.handleTaskDelete.bind(this);
-		this.handleSave = this.handleSave.bind(this);
 		this.handleDeleteDialog = this.handleDeleteDialog.bind(this);
+		this.onDataChange = this.onDataChange.bind(this);
 	}
 
 	componentDidMount() {
@@ -40,10 +40,6 @@ export default class Tasks extends Component {
 		this.idsToDelete = e.map((item) => item._id);
 	}
 
-	onCellClick(colData, cellMeta) {
-		console.log(colData,cellMeta);
-	}
-
 	handleTaskDelete() {
 		deleteTasks(this.idsToDelete)
 		.then((response) => {
@@ -57,27 +53,20 @@ export default class Tasks extends Component {
 		})
 	}
 
-	handleSave(data) {
-		if(data.type === 'Add new task') {
-			createTask(data.title, data.description).then((response) =>{
-				response.actions = <div><Link to={"/task/"+response._id}><Button variant="outlined" color="primary" >Details</Button></Link><Button variant="outlined" onClick={() => this.handleEdit(response)}>Edit</Button></div>;
-				let data = this.state.tasksData;
-				data.push(response);
-				this.setState({tasksData: data});
-			});
-			this.setState({addModal: false});
+	onDataChange(data) {
+		let stateData = this.state.tasksData;
+		let index = stateData.findIndex(x => x._id === data._id);
+
+		if(index === -1) {
+			data.actions = <div><Link to={"/task/"+data._id}><Button variant="outlined" color="primary" >Details</Button></Link><Button variant="outlined" onClick={() => this.handleEdit(data)}>Edit</Button></div>;
+			stateData.push(data);
 		}
 		else {
-			updateTask(this.state.singleTask._id, data.title, data.description)
-			.then((response) => {
-				let data = this.state.tasksData;
-				let index = data.findIndex(x => x._id === response._id);
-				data[index].title = response.title;
-				data[index].description = response.description;
-				this.setState({tasksData: data});
-			});
-			this.setState({addModal: false});
+			stateData[index].title = data.title;
+			stateData[index].description = data.description;
 		}
+
+		this.setState({tasksData: stateData, addModal: false});
 	}
 
 	handleEdit(data) {
@@ -127,7 +116,7 @@ export default class Tasks extends Component {
 				<Dialog 
 					open={this.state.addModal} 
 					handleClose={()=>this.setState({addModal: false})}
-					handleSave={this.handleSave}
+					onDataChange={this.onDataChange}
 					data={this.state.singleTask}
 				/>
 				<DeleteDialog
