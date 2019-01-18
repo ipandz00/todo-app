@@ -40,3 +40,11 @@ require('./app/routes/task.routes.js')(app);
 if (require.main === module) {
   app.listen.apply(app, args);
 }
+
+//serve react files
+app.use(express.static(path.join(__dirname, 'frontend-app/build')));
+
+// Handles any requests that don't match the ones above
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/frontend-app/build/index.html'));
+});
