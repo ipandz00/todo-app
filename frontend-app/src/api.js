@@ -56,6 +56,17 @@ export function updateTask( id, title, description) {
 
 export function deleteTasks( ids) {
 	return new Promise((resolve, reject) => {
+		axios.delete(urlPrefix + '/api/tasks',
+		{
+			data: {
+				taskIds: ids
+			}
+		}).then((response) =>{
+			resolve(response.data);
+		})
+		.catch((err) => {
+			reject(err);
+		})
 
 	});
 }

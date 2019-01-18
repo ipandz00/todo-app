@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getTasks, createTask, updateTask } from '../api.js';
+import { getTasks, createTask, updateTask, deleteTasks } from '../api.js';
 import MaterialTable from 'material-table'
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
@@ -17,6 +17,8 @@ export default class Tasks extends Component {
 			singleTask: null
 		}
 
+		this.idsToDelete = [];
+
 		this.onSelectionChange = this.onSelectionChange.bind(this);
 		this.handleTaskDelete = this.handleTaskDelete.bind(this);
 		this.handleSave = this.handleSave.bind(this);
@@ -32,15 +34,24 @@ export default class Tasks extends Component {
 	}
 
 	onSelectionChange(e) {
-		console.log(e);
+		this.idsToDelete = e.map((item) => item._id);
 	}
 
 	onCellClick(colData, cellMeta) {
 		console.log(colData,cellMeta);
 	}
 
-	handleTaskDelete(event, rowData) {
-		console.log(rowData);
+	handleTaskDelete() {
+		deleteTasks(this.idsToDelete)
+		.then((response) => {
+			let data = this.state.tasksData;
+			this.idsToDelete.forEach((item) => {
+				let index = data.findIndex(x => x._id === item);
+				data.splice(index, 1);
+				this.idsToDelete.length = 0;
+			});
+			this.setState({tasksData: data});
+		})
 	}
 
 	handleSave(data) {
@@ -89,7 +100,8 @@ export default class Tasks extends Component {
 					  columns={[{title: "ID", field: '_id'}, {title: "Title", field: 'title'}, {title:"Description", field: 'description'}, {title: "Creation date", field:'createdAt'},{title: "Actions", field: 'actions'}]}
 					  options={{
 					  	actionsColumnIndex: -1,
-					  	selection: true
+					  	selection: true,
+					  	paging: this.state.tasksData.length > 5
 					  }}
 					  actions={[
 					  	{
