@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getTask, deleteTasks, updateTask } from '../api.js';
+import { getTask, deleteTasks } from '../api.js';
 import { Link, Redirect } from "react-router-dom";
 import Dialog from '../containers/AddUpdateDialogContainer.js';
 import TaskDetails from '../containers/TaskDetailsContainer.js';
@@ -22,7 +22,7 @@ export default class Task extends Component {
 		}
 
 		this.handleClose = this.handleClose.bind(this);
-		this.handleSave = this.handleSave.bind(this);
+		this.onDataChange = this.onDataChange.bind(this);
 		this.handleDeleteDialog = this.handleDeleteDialog.bind(this);
 	}
 
@@ -37,12 +37,8 @@ export default class Task extends Component {
 		this.setState({updateModal: false});
 	}
 
-	handleSave(data) {
-		updateTask(this.state.taskData._id, data.title, data.description)
-			.then((response) => {
-				this.setState({taskData: response});
-			});
-		this.setState({updateModal: false});
+	onDataChange(data) {
+		this.setState({updateModal: false, taskData: data});
 	}
 
 	handleDeleteDialog(ans) {
@@ -96,7 +92,7 @@ export default class Task extends Component {
 					open={this.state.updateModal} 
 					data={this.state.taskData}
 					handleClose={this.handleClose}
-					handleSave={this.handleSave}
+					onDataChange={this.onDataChange}
 				/>
 				<DeleteDialog
 					open={this.state.deleteModal}
