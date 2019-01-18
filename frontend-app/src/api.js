@@ -54,6 +54,16 @@ export function deleteTasks( ids) {
 
 export function createTask( title, description ) {
 	return new Promise((resolve, reject) => {
-
+		axios.post(urlPrefix + '/api/tasks', 
+		{
+		   title: title,
+		   description: description
+		})
+		.then((response) => {
+			console.log(response);
+		})
+		.catch((err) => {
+			console.log(err)
+		})
 	});
 }
