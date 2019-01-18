@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { getTasks } from '../api.js';
 import MaterialTable from 'material-table'
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
+import { Link } from "react-router-dom";
 
 export default class Tasks extends Component {
 	constructor(props) {
@@ -12,20 +12,20 @@ export default class Tasks extends Component {
 			taskData: null
 		}
 
-		this.onRowsDelete = this.onRowsDelete.bind(this);
+		this.onSelectionChange = this.onSelectionChange.bind(this);
 		this.onCellClick = this.onCellClick.bind(this);
 	}
 
 	componentDidMount() {
 		getTasks().then((response) => {
 			response.forEach((item) => {
-				item.ac = <Checkbox />;
+				item.actions = <div><Link to={"/task/"+item._id}><Button variant="outlined" color="primary" >Details</Button></Link><Button variant="outlined">Edit</Button></div>;
 			});
 			this.setState({taskData: response});
 		});
 	}
 
-	onRowsDelete(e) {
+	onSelectionChange(e) {
 		console.log(e);
 	}
 
@@ -42,17 +42,17 @@ export default class Tasks extends Component {
 					:
 					<MaterialTable
 					  title={"Task list"}
-					  onSelectionChange={this.onRowsDelete}
-					  onRowClick={this.onCellClick}
+					  onSelectionChange={this.onSelectionChange}
 					  data={this.state.taskData}
-					  columns={[{title: "#", field: 'ac'},{title: "ID", field: '_id'}, {title: "Title", field: 'title'}, {title:"Description", field: 'description'}, {title: "Creation date", field:'createdAt'}]}
+					  columns={[{title: "ID", field: '_id'}, {title: "Title", field: 'title'}, {title:"Description", field: 'description'}, {title: "Creation date", field:'createdAt'},{title: "Actions", field: 'actions'}]}
 					  options={{
 					  	actionsColumnIndex: -1,
+					  	selection: true
 					  }}
 					  actions={[
 					  	{
-					      icon: 'edit_circle',
-					      tooltip: 'Show User Info',
+					      icon: 'delete_circle',
+					      tooltip: 'Delete selected tasks',
 					      onClick: (event, rowData) => {
 					        alert('You clicked user ' + rowData.title)
 					      },
