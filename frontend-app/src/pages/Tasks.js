@@ -13,7 +13,7 @@ export default class Tasks extends Component {
 		}
 
 		this.onSelectionChange = this.onSelectionChange.bind(this);
-		this.onCellClick = this.onCellClick.bind(this);
+		this.handleTaskDelete = this.handleTaskDelete.bind(this);
 	}
 
 	componentDidMount() {
@@ -31,6 +31,10 @@ export default class Tasks extends Component {
 
 	onCellClick(colData, cellMeta) {
 		console.log(colData,cellMeta);
+	}
+
+	handleTaskDelete(event, rowData) {
+		console.log(rowData);
 	}
 
 	render() {
@@ -53,9 +57,7 @@ export default class Tasks extends Component {
 					  	{
 					      icon: 'delete_circle',
 					      tooltip: 'Delete selected tasks',
-					      onClick: (event, rowData) => {
-					        alert('You clicked user ' + rowData.title)
-					      },
+					      onClick: this.handleTaskDelete
 					    },
 					  	]}
 					/>
