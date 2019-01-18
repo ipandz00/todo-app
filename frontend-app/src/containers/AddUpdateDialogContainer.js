@@ -21,18 +21,25 @@ export default class addUpdateDialogContainer extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if(prevProps.data._id !== this.props.data._id) {
+		if(prevProps.open !== this.props.open) {
 			this.checkComponentType();
 		}
 
 	}
 
 	checkComponentType() {
-		if(this.props.data.title) {
+		if(this.props.data) {
 			this.setState({
 				type: 'Edit task',
 				title: this.props.data.title,
 				description: this.props.data.description
+			});
+		}
+		else {
+			this.setState({
+				type: 'Add new task',
+				title: '',
+				description: ''
 			});
 		}
 	}

@@ -42,7 +42,15 @@ export function getTask( id ) {
 
 export function updateTask( id, title, description) {
 	return new Promise((resolve, reject) => {
-
+		axios.put(urlPrefix + '/api/tasks/' + id,
+		{
+			title: title,
+			description: description
+		}).then((response) => {
+			resolve(response.data);
+		}).catch((err) => {
+			reject(err);
+		});
 	});
 }
 
@@ -60,10 +68,10 @@ export function createTask( title, description ) {
 		   description: description
 		})
 		.then((response) => {
-			console.log(response);
+			resolve(response.data);
 		})
 		.catch((err) => {
-			console.log(err)
+			reject(err)
 		})
 	});
 }
