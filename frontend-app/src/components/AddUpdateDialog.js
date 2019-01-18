@@ -23,6 +23,7 @@ const AddUpdateDialog = (props) => {
           fullWidth
           value={props.title}
           onChange={props.handleInputChange}
+          required
         />
         <TextField
           margin="dense"

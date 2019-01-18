@@ -6,10 +6,9 @@ export default class addUpdateDialogContainer extends Component {
 		super(props);
 
 		this.state={
-			modalOpen: true,
 			type: 'Add new task',
 			title: '',
-			label: ''
+			description: ''
 		}
 
 		this.handleClose = this.handleClose.bind(this);
@@ -39,11 +38,11 @@ export default class addUpdateDialogContainer extends Component {
 	}
 
 	handleClose() {
-		this.setState({modalOpen: false});
+		this.props.handleClose();
 	}
 
 	handleSaveClick() {
-
+		this.props.handleSave(this.state);
 	}
 
 	handleInputChange(e) {
@@ -53,7 +52,7 @@ export default class addUpdateDialogContainer extends Component {
 	render() {
 		return (
 			<AddUpdateDialog
-				open={this.state.modalOpen}
+				open={this.props.open}
 				handleClose={this.handleClose}
 				handleSaveClick={this.handleSaveClick}
 				handleInputChange={this.handleInputChange}

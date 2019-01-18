@@ -46,7 +46,7 @@ export default class Tasks extends Component {
 					<p>Loading...</p>
 					:
 					<MaterialTable
-					  title={"Task list"}
+					  title={<div>Task list <button>Add new</button></div>}
 					  onSelectionChange={this.onSelectionChange}
 					  data={this.state.tasksData}
 					  columns={[{title: "ID", field: '_id'}, {title: "Title", field: 'title'}, {title:"Description", field: 'description'}, {title: "Creation date", field:'createdAt'},{title: "Actions", field: 'actions'}]}
